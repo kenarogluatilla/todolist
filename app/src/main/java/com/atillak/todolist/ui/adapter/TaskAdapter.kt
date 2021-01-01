@@ -25,6 +25,13 @@ class TaskAdapter(var context : Context, var taskList: ArrayList<Task>) :
 
     }
 
+    fun updateList(newList: ArrayList<Task>) {
+        taskList.clear()
+        taskList.addAll(newList)
+        notifyDataSetChanged()
+
+    }
+
     override fun getItemCount(): Int = taskList.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

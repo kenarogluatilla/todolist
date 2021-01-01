@@ -1,7 +1,9 @@
 package com.atillak.todolist.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +11,7 @@ import com.atillak.todolist.R
 import com.atillak.todolist.db.TaskRepository
 import com.atillak.todolist.model.Task
 import com.atillak.todolist.ui.adapter.TaskAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,13 +29,23 @@ class MainActivity : AppCompatActivity() {
         taskRepository = TaskRepository(this)
         taskList = taskRepository.getAllTask()
 
-
         val recyclerView = findViewById<RecyclerView>(R.id.task_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = TaskAdapter(this, taskList)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
+
+        var add_task_fab = findViewById<FloatingActionButton>(R.id.add_task_fab)
+
+        add_task_fab.setOnClickListener{startActivity(Intent(this, TaskActivity::class.java)) }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        taskList = taskRepository.getAllTask()
+        adapter.updateList(taskList)
     }
 }
 

@@ -1,5 +1,6 @@
 package com.atillak.todolist.db
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.atillak.todolist.model.Task
@@ -34,8 +35,21 @@ class TaskRepository(var context : Context) {
         return list
     }
 
-    fun insertTask() {
+    fun insertTask(task: Task): Int {
+        val db = mDBHelper.writableDatabase
 
+        val values = ContentValues()
+        values.apply {
+            put(DBHelper.KEY_NAME, task.name)
+            put(DBHelper.KEY_DATE, task.date)
+
+        }
+        //id -1 mi değil mi diye kontrol etmek amacıyla id değişkenine atandı.
+        val id = db.insert(DBHelper.TABLE_NAME, null , values)
+
+        db.close()
+
+        return id.toInt()
     }
 
     fun deleteTask(){
