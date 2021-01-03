@@ -18,25 +18,19 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:theme="@style/TextLabel"
-            android:textColorHint="@android:color/white">
+
 
             <EditText
                 android:id="@+id/task_name_edt"
                 android:layout_width="match_parent"
+                android:paddingLeft="16dp"
                 android:layout_height="match_parent"
                 android:background="@color/design_default_color_primary"
                 android:textSize="30sp"
                 android:hint="Task Name"
                 android:textColor="@android:color/white"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+
 
 
     </com.google.android.material.appbar.AppBarLayout>

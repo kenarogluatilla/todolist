@@ -13,6 +13,10 @@ import com.atillak.todolist.model.Task
 class TaskAdapter(var context : Context, var taskList: ArrayList<Task>) :
         RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
 
+    private lateinit var onTaskCompleteListener: OnTaskCompleteListener
+    private lateinit var onTaskEditListener: OnTaskEditListener
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item ,parent ,false)
@@ -22,6 +26,21 @@ class TaskAdapter(var context : Context, var taskList: ArrayList<Task>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.taskName.text = taskList[position].name
         holder.taskDate.text = taskList[position].date
+        holder.completeCheckBox.isChecked =false
+        //silme işlemi için
+        holder.completeCheckBox.setOnClickListener {
+            onTaskCompleteListener.let {
+                it.onTaskComplete(taskList[position].id)
+            }
+        }
+        holder.itemView.setOnCreateContextMenuListener { menu, v, menuInfo ->
+            menu.add("Edit").setOnMenuItemClickListener {
+                onTaskEditListener.let {
+                    it.onEditTask(taskList[position])
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
 
     }
 
@@ -29,7 +48,6 @@ class TaskAdapter(var context : Context, var taskList: ArrayList<Task>) :
         taskList.clear()
         taskList.addAll(newList)
         notifyDataSetChanged()
-
     }
 
     override fun getItemCount(): Int = taskList.size
@@ -38,7 +56,18 @@ class TaskAdapter(var context : Context, var taskList: ArrayList<Task>) :
         val taskName = view.findViewById<TextView>(R.id.itemTaskName)
         val taskDate = view.findViewById<TextView>(R.id.itemDate)
         val completeCheckBox = view.findViewById<CheckBox>(R.id.itemComplete)
+    }
+    fun setOnTaskCompleteListener(onTaskCompleteListener: OnTaskCompleteListener) {
+        this.onTaskCompleteListener = onTaskCompleteListener
+    }
+    fun setOnTaskEditListener(onTaskEditListener: OnTaskEditListener){
+      this.onTaskEditListener = onTaskEditListener
+    }
+    interface OnTaskCompleteListener {
+        fun onTaskComplete(taskId : Int)
+    }
+    interface OnTaskEditListener{
+        fun onEditTask(task: Task)
 
     }
-
 }
